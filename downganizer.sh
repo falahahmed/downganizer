@@ -1,0 +1,64 @@
+#!/bin/bash
+# Parse arguments using getopt (GNU version)
+
+source "lib/services.sh"
+source "lib/downganize.sh"
+
+args=$(getopt -o hv --long help,version -n "$0" -- "$@")
+if [[ $? -ne 0 ]]; then
+    echo "Usage: $0 [-v | --version or -h | --help] [option]" >&2
+    exit 1
+fi
+
+echo_version() {
+    echo "Downganizer version 1.0
+    "
+}
+
+echo_help() {
+    echo "Usage: $0 [flags/option]"
+    echo "Options:"
+    echo "  -v, --version         Show version information"
+    echo "  -h, --help            Show this help message"
+    echo "  downganizer do          Organizes the Downloads directory now."
+}
+
+eval set -- "$args"
+
+version=false
+help=false
+
+# Extract arguments
+while true; do
+    case "$1" in
+        -v|--version) version=true; shift ;;
+        -h|--help) help=true; shift ;;
+        --) shift; break ;;
+        *) echo "Internal error"; exit 1 ;;
+    esac
+done
+
+if [ $# -gt 1 ]; then
+    echo "Too many arguments provided." >&2
+    echo "Usage: $0 [-v | --version or -h | --help] [option]" >&2
+    exit 1
+fi
+
+case $1 in
+    "do") downganize ;;
+    "start") dg_start ;;
+    "stop") dg_stop ;;
+    "restart") dg_restart ;;
+    "enable") dg_enable ;;
+    "disable") dg_disable ;;
+    "status") dg_status ;;
+    *) echo "Invalid option: $1" >&2; exit 1 ;;
+esac
+
+# Execute the appropriate action
+if [ "$version" = true ]; then
+    echo_version
+fi
+if [ "$help" = true ]; then
+    echo_help
+fi
