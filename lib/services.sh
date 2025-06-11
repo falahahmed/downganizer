@@ -1,13 +1,25 @@
 #!/bin/bash
 
-dg_start () {}
+dg_start () {
+    echo ;
+}
 
-dg_stop () {}
+dg_stop () {
+    echo ;
+}
 
-dg_restart () {}
+dg_restart () {
+    echo ;
+}
 
-dg_enable () {}
+dg_enable () {
+    echo ;
+}
 
-dg_disable () {}
+dg_disable () {
+    echo ;
+}
 
-dg_status () {}
+dg_status () {
+    echo ;
+}
