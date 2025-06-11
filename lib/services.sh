@@ -1,7 +1,7 @@
 #!/bin/bash
 
 dg_start () {
-    echo ;
+    ./lib/monitor.sh
 }
 
 dg_stop () {
