@@ -1,8 +1,10 @@
 #!/bin/bash
 # Parse arguments using getopt (GNU version)
 
-source "lib/services.sh"
-source "lib/downganize.sh"
+SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+
+source "$SCRIPT_DIR/lib/services.sh"
+source "$SCRIPT_DIR/lib/downganize.sh"
 
 args=$(getopt -o hv --long help,version -n "$0" -- "$@")
 if [[ $? -ne 0 ]]; then
