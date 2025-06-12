@@ -1,7 +1,9 @@
 #!/bin/bash
 
+SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+
 dg_start () {
-    ./lib/monitor.sh
+    $SCRIPT_DIR/lib/monitor.sh
 }
 
 dg_stop () {

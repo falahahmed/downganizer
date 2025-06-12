@@ -1,6 +1,8 @@
 #!/bin/bash
 
-source "lib/downganize.sh"
+SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+
+source "$SCRIPT_DIR/lib/downganize.sh"
 
 inotifywait -m ~/Downloads -e create -e moved_to |
 while read -r directory event file; do
