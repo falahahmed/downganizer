@@ -23,6 +23,7 @@ echo_help() {
     echo "  -v, --version         Show version information"
     echo "  -h, --help            Show this help message"
     echo "  downganizer do          Organizes the Downloads directory now."
+    echo "  downganizer start       Start the Downganizer service - monitors new Downloads"
 }
 
 eval set -- "$args"

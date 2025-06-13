@@ -12,8 +12,6 @@ sort_file () {
     local dir="$HOME/Downloads"
 
     local siz=$(stat -c %s "$file")
-    
-    echo "$siz"
 
     ext=$(echo "$file" | rev | cut -d '.' -f1 | rev)
     if [ "$siz" -eq 0 ]; then
@@ -26,8 +24,6 @@ sort_file () {
             ;;
         mp4|mkv|avi|mov|flv)
             create_dir "$dir/Videos"
-            echo "dir: $dir"
-            echo "file: $file"
             mv "$file" "$dir/Videos/"
             ;;
         mp3|wav|flac|aac|ogg)

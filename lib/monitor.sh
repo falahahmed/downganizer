@@ -7,9 +7,15 @@ source "$SCRIPT_DIR/downganize.sh"
 inotifywait -m ~/Downloads -e create -e moved_to |
 while read -r directory event file; do
     if [ -d "$HOME/Downloads/$file" ]; then
-        echo "Hello"
         continue
     fi
-    echo "file from moni: $file"
+    siz=$(stat -c %s "$HOME/Downloads/$file")
+    if [ "$siz" -eq 0 ]; then
+        sleep 0.5
+        siz=$(stat -c %s "$HOME/Downloads/$file")
+        if [ "$siz" -eq 0 ]; then
+            continue
+        fi
+    fi
     sort_file "$HOME/Downloads/$file"
 done
