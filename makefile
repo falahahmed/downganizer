@@ -17,7 +17,6 @@ default:
 	cp $(pac).sh $(pac)/usr/local/bin/$(pac)
 	cp -r lib $(pac)/usr/local/bin/
 	echo "$(VER)" > VERSION
-	echo "$(VER)"
 
 make config:
 	echo "Origin: $(pac)" > apt-repo/conf/distributions
