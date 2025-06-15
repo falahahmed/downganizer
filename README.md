@@ -4,6 +4,14 @@ downganizer is a package to efficiently organize your Downloads directory in lin
 
 ## Table of contents
 
+- [Table of Contents](#table-of-contents)
+- [Features](#features)
+- [Quick Start](#quick-start)
+    - [Installation](#installation)
+    - [Usage](#usage)
+- [Get in touch with us](#get-in-touch-with-us)
+    - [Community](#community)
+
 ## Features
 
 - Easy and efficient way to organize downloaded files.
@@ -33,7 +41,7 @@ To get started, you need a linux distro, preferably debian based one. Follow the
 
 ### Usage
 
-Currently, there are two features that you can use:
+Currently, these are the features you can use:
 1. `downganizer -v` or `downganizer --version` : To check the current version of the package.
 2. `downganizer -h` or `downganizer --help` : To get basic info about the package
 3. `downganizer do` : This will organize the files that are in the Downloads directory.
@@ -45,4 +53,5 @@ Currently, there are two features that you can use:
 
 To get in touch with us, please contact us through telegram.
 > Telegram Channel: `@Adekacci`([link](https://t.me/Adekacci))
+
 > Telegram Group : `@ChruxGroup`([link](https://t.me/ChruxGroup))
