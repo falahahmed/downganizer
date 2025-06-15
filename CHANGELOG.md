@@ -2,6 +2,9 @@
 
 All notable changes (starting from v1.0) will be documented here
 
+## v1.2 [Unreleased]
+
+
 ## v1.1 - 13/06/2025 [Current]
 
 ### Fixed

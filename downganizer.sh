@@ -13,7 +13,7 @@ if [[ $? -ne 0 ]]; then
 fi
 
 echo_version() {
-    echo "Downganizer version 1.0
+    echo "Downganizer version 1.1
     "
 }
 
