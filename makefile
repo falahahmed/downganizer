@@ -78,6 +78,11 @@ build:
 	@sudo chmod 755 apt-repo/pool/main/d/$(pac)/$(pac)_$(VER)_all.deb
 	@echo "$(GREEN)Build process completed successfully!$(WHITE)"
 	
+transfer:
+	@rm /home/chrux/Documents/Web/adekacciorg.github.io/lin-packs/pool/main/d/downganizer/*
+	@cp apt-repo/pool/main/d/$(pac)/$(pac)_$(VER)_all.deb /home/chrux/Documents/Web/adekacciorg.github.io/lin-packs/pool/main/d/downganizer/
+	@echo "Package transferred to pack-repo"
+
 clean:
 	@rm -rf $(pac)/*
 	@rm -rf apt-repo/*
