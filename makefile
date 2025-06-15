@@ -4,10 +4,20 @@ pac="downganizer"
 
 VER ?= $(shell cat VERSION)
 
+GREEN=\033[0;32m
+RED=\033[0;31m
+WHITE=\033[1;37m
+
+devdeps=$(shell apt list build-essential debhelper dh-make devscripts reprepro 2>/dev/null | grep -c "installed")
+
 default:
-	echo "Installing build dependencies"
-	sudo apt-get install build-essential debhelper dh-make devscripts reprepro
-	echo "Build dependencies installed"
+	@echo "Checking build dependencies"
+	@if [ $(devdeps) -eq 5 ]; then \
+		echo "Dependencies installed. Proceeding..."; \
+	else \
+		echo "$(RED)Dependencies are not installed.$(WHITE) Please run $(GREEN)make install$(WHITE)"; \
+		exit 1; \
+	fi
 
 	echo "Creating necessary directories"
 	mkdir -p $(pac)/DEBIAN
@@ -18,7 +28,12 @@ default:
 	cp -r lib $(pac)/usr/local/bin/
 	echo "$(VER)" > VERSION
 
-make config:
+install:
+	echo "Installing build dependencies"
+	@sudo apt-get install build-essential debhelper dh-make devscripts reprepro
+	echo "Build dependencies installed"
+
+config:
 	echo "Origin: $(pac)" > apt-repo/conf/distributions
 	echo "Label: $(pac)" >> apt-repo/conf/distributions
 	echo "Suite: stable" >> apt-repo/conf/distributions
