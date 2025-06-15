@@ -30,6 +30,7 @@ eval set -- "$args"
 
 version=false
 help=false
+either=false
 
 # Extract arguments
 while true; do
@@ -40,6 +41,20 @@ while true; do
         *) echo "Internal error"; exit 1 ;;
     esac
 done
+
+# Execute the appropriate action
+if [ "$version" = true ]; then
+    echo_version
+    either=true
+fi
+if [ "$help" = true ]; then
+    echo_help
+    either=true
+fi
+
+if [ "$either" = true ]; then
+    exit 0
+fi
 
 if [ $# -gt 1 ]; then
     echo "Too many arguments provided." >&2
@@ -57,11 +72,3 @@ case $1 in
     "status") dg_status ;;
     *) echo "Invalid option: $1" >&2; exit 1 ;;
 esac
-
-# Execute the appropriate action
-if [ "$version" = true ]; then
-    echo_version
-fi
-if [ "$help" = true ]; then
-    echo_help
-fi
