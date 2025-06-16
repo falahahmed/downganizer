@@ -6,6 +6,8 @@ SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 source "$SCRIPT_DIR/lib/services.sh"
 source "$SCRIPT_DIR/lib/downganize.sh"
 
+VER=1.1.1
+
 args=$(getopt -o hv --long help,version -n "$0" -- "$@")
 if [[ $? -ne 0 ]]; then
     echo "Usage: $0 [-v | --version or -h | --help] [option]" >&2
@@ -13,8 +15,7 @@ if [[ $? -ne 0 ]]; then
 fi
 
 echo_version() {
-    echo "Downganizer version 1.1.1
-    "
+    echo "Downganizer version $VER"
 }
 
 echo_help() {
