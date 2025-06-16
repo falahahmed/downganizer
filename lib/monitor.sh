@@ -18,4 +18,4 @@ while read -r directory event file; do
         fi
     fi
     sort_file "$HOME/Downloads/$file"
-done
+done & disown

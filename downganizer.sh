@@ -13,12 +13,12 @@ if [[ $? -ne 0 ]]; then
 fi
 
 echo_version() {
-    echo "Downganizer version 1.1
+    echo "Downganizer version 1.1.1
     "
 }
 
 echo_help() {
-    echo "Usage: $0 [flags/option]"
+    echo "Usage: downganizer [flags/option]"
     echo "Options:"
     echo "  -v, --version         Show version information"
     echo "  -h, --help            Show this help message"
@@ -58,7 +58,7 @@ fi
 
 if [ $# -gt 1 ]; then
     echo "Too many arguments provided." >&2
-    echo "Usage: $0 [-v | --version or -h | --help] [option]" >&2
+    echo "Use -h or --help for usage information." >&2
     exit 1
 fi
 
@@ -70,5 +70,6 @@ case $1 in
     "enable") dg_enable ;;
     "disable") dg_disable ;;
     "status") dg_status ;;
+    "") echo "No option provided. Use -h or --help for usage information." >&2; exit 1 ;;
     *) echo "Invalid option: $1" >&2; exit 1 ;;
 esac
