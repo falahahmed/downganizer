@@ -15,7 +15,7 @@ default:
 	@if [ $(devdeps) -eq 5 ]; then \
 		echo "Dependencies installed. Proceeding..."; \
 	else \
-		echo "$(RED)Dependencies are not installed.$(WHITE) Please run $(GREEN)make install$(WHITE)"; \
+		echo "$(RED)Dependencies are not installed.$(WHITE) Please run $(GREEN) sudo make install$(WHITE)"; \
 		exit 1; \
 	fi
 
@@ -49,7 +49,7 @@ config:
 	@echo "Version: $(VER)" >> $(pac)/DEBIAN/control
 	@echo "Section: utils" >> $(pac)/DEBIAN/control
 	@echo "Priority: optional" >> $(pac)/DEBIAN/control
-	@echo "Depends: inotify-tools (>= 3.22.6)"
+	@echo "Depends: inotify-tools (>= 3.22.6)" >> $(pac)/DEBIAN/control
 	@echo "Architecture: all" >> $(pac)/DEBIAN/control
 	@echo "Maintainer: Falah Ahmed <kpfalah99@gmail.com>" >> $(pac)/DEBIAN/control
 	@echo "Description: A script to create a command from executable files." >> $(pac)/DEBIAN/control
