@@ -4,7 +4,7 @@ SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
 source "$SCRIPT_DIR/downganize.sh"
 
-inotifywait -m ~/Downloads -e create -e moved_to |
+inotifywait -m ~/Downloads -e create -e moved_to 2>/dev/null|
 while read -r directory event file; do
     if [ -d "$HOME/Downloads/$file" ]; then
         continue
