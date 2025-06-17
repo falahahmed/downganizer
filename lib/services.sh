@@ -3,12 +3,21 @@
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
 dg_start () {
-    $SCRIPT_DIR/lib/monitor.sh > /dev/null & disown
-    sleep 0.5
+    $SCRIPT_DIR/lib/monitor.sh & disown
+    sleep 0.2
 }
 
 dg_stop () {
-    echo ;
+    monitors=$(pgrep -f "$SCRIPT_DIR/lib/monitor.sh")
+    count=$(pgrep -c -f "$SCRIPT_DIR/lib/monitor.sh")
+    if [ "$count" -eq 0 ]; then
+        echo "Downganizer is not running."
+        return 0
+    fi
+    for monitor in $monitors; do
+        kill -USR1 $monitor
+    done
+    echo "All running monitors have been stopped."
 }
 
 dg_restart () {
