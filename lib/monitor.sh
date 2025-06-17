@@ -10,12 +10,12 @@ while read -r directory event file; do
         continue
     fi
     siz=$(stat -c %s "$HOME/Downloads/$file")
-    if [ "$siz" -eq 0 ]; then
+    if [ -z "$siz"] || [ "$siz" -eq 0 ]; then
         sleep 0.5
         siz=$(stat -c %s "$HOME/Downloads/$file")
-        if [ "$siz" -eq 0 ]; then
+        if [ -z "$siz" ] || [ "$siz" -eq 0 ]; then
             continue
         fi
     fi
     sort_file "$HOME/Downloads/$file"
-done
+done 2>/dev/null
