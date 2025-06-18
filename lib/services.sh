@@ -27,17 +27,61 @@ dg_stop () {
 }
 
 dg_restart () {
-    echo ;
+    dg_stop
+    sleep 0.2
+    dg_start
 }
 
 dg_enable () {
-    echo ;
+    if [ ! -d ~/.config/autostart ]; then
+        mkdir -p ~/.config/autostart
+    fi
+    if [[ ! -f ~/.config/autostart/downganizer.desktop ]]; then
+        create_autostart_file
+    fi
+    enabled=$(grep 'Autostart-enabled=true' ~/.config/autostart/downganizer.desktop)
+    if [[ -n "$enabled" ]]; then
+        echo "Downganizer is already enabled."
+        return 0
+    fi
+    sed -i 's/false/true/' ~/.config/autostart/downganizer.desktop
+    echo "Downganizer enabled. Reboot the system to apply changes."
 }
 
 dg_disable () {
-    echo ;
+    if [[ ! -f ~/.config/autostart/downganizer.desktop ]]; then
+        echo "Downganzer is not enabled."
+        return 0
+    fi
+    disabled=$(grep 'Autostart-enabled=false' ~/.config/autostart/downganizer.desktop)
+    if [ -n "$disabled" ]; then
+        echo "Downganizer is not enabled"
+        return 0
+    fi
+    sed -i 's/true/false/' ~/.config/autostart/downganizer.desktop
+    echo "Downganzier disabled"
 }
 
-dg_status () {
-    echo ;
+MAIN_PID=0
+SUB_PID=0
+
+status () {
+    date
+    echo "Hello "
+    var=$(pgrep -f "$SCRIPT_DIR/lib/monitor.sh")
+    echo "var: $var"
+}
+
+dg_status() {
+    watch -n 1 -t "bash -c '$(declare -f status); status'"
+}
+
+create_autostart_file () {
+    echo "[Desktop Entry]
+Type=Application
+Name=Downganizer
+Exec=$SCRIPT_DIR/downganizer.sh start
+Comment=Organize your Downloads directory
+Icon=$SCRIPT_DIR/icon.png
+X-GNOME-Autostart-enabled=false" > ~/.config/autostart/downganizer.desktop
 }
