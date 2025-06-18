@@ -10,7 +10,13 @@ All notable changes (starting from v1.0) will be documented here
 - Fixed
 - Security -->
 
-## v1.3.0 - 18/06/2025 [Current]
+## v1.3.1 - 18/06/2025 [Current]
+
+### Fixed
+
+- status was showing `Loaded` even if it was disabled
+
+## v1.3.0 - 18/06/2025
 
 ### Added
 
