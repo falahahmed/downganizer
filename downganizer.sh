@@ -19,12 +19,18 @@ echo_version() {
 }
 
 echo_help() {
-    echo "Usage: downganizer [flags/option]"
-    echo "Options:"
-    echo "  -v, --version         Show version information"
-    echo "  -h, --help            Show this help message"
-    echo "  downganizer do          Organizes the Downloads directory now."
-    echo "  downganizer start       Start the Downganizer service - monitors new Downloads"
+    echo "Usage: downganizer [flags/option]
+    Flags:
+        -v, --version         Show version information
+        -h, --help            Show this help message
+    Options: 
+        do          Organizes the Downloads directory now.
+        start       Start the Downganizer service - monitors new Downloads.
+        stop       Stop the Downganizer service.
+        restart    Restart the Downganizer service.
+        enable     Enable the Downganizer service to start on boot.
+        disable    Disable the Downganizer service from starting on boot.
+        status     Show the status of the Downganizer service."
 }
 
 eval set -- "$args"

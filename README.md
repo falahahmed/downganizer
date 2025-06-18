@@ -45,7 +45,11 @@ Currently, these are the features you can use:
 1. `downganizer -v` or `downganizer --version` : To check the current version of the package.
 2. `downganizer -h` or `downganizer --help` : To get basic info about the package
 3. `downganizer do` : This will organize the files that are in the Downloads directory.
-4. `downganizer start`: This will start monitoring downloads directory for any new file, and if found, it will move it to the respective sub-directory.
+4. `downganizer start` : This will start monitoring downloads directory for any new file, and if found, it will move it to the respective sub-directory.
+5. `downganizer stop` : Stops any running instances
+6. `downganizer enable` : Makes the program autostart on boot
+7. `downganizer disable` : Stops autostart if enabled
+8. `downganizer status` : To display the current status (running, enabled, etc) of the process
 
 ## Get in touch with us
 
