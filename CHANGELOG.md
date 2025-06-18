@@ -10,7 +10,18 @@ All notable changes (starting from v1.0) will be documented here
 - Fixed
 - Security -->
 
-## v1.2.1 - 17/06/2025 [Current]
+## v1.3.0 - 18/06/2025 [Current]
+
+### Added
+
+Added few new options
+
+- `restart` : Stops current running processes and restarts watching
+- `enable` : Sets up a configuration to autostart the program (watching) on boot
+- `disable` : Changes the configuration to stop autostart on boot
+- `status` : Checks the status and shows if running, enabled, etc
+
+## v1.2.1 - 17/06/2025
 
 ### Fixed
 
