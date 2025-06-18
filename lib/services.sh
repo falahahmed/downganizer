@@ -93,8 +93,12 @@ status () {
         mem=$(ps -p $inot -o %mem | grep -v "MEM" | cut -d ' ' -f2)
     fi
 
-    if [[ -f /home/$USER/.config/autostart/downganizer.desktop ]]; then
-        load="Loaded (/home/$USER/.config/autostart/downganizer.desktop)"
+    file=/home/$USER/.config/autostart/downganizer.desktop
+    if [[ -f $file ]]; then
+        enabled=$(grep 'Autostart-enabled=true' $file)
+        if [[ -n "$enabled" ]]; then
+            load="Loaded (/home/$USER/.config/autostart/downganizer.desktop)"
+        fi
     fi
     echo -e "$title
     Loaded: $load
