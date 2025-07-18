@@ -10,7 +10,14 @@ All notable changes (starting from v1.0) will be documented here
 - Fixed
 - Security -->
 
-## v1.3.1 - 18/06/2025 [Current]
+## v1.3.2 - 18/07/2025 [Current]
+
+### Fixed
+
+- Autostart function was not working properly
+- Presentation docs was being moved to `Others` directory 
+
+## v1.3.1 - 18/06/2025
 
 ### Fixed
 

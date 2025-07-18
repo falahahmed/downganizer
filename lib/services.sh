@@ -63,6 +63,7 @@ dg_disable () {
         return 0
     fi
     sed -i 's/true/false/' ~/.config/autostart/downganizer.desktop
+    chmod +x ~/.config/autostart/downganizer.desktop
     echo "Downganzier disabled"
 }
 
@@ -117,8 +118,9 @@ create_autostart_file () {
     echo "[Desktop Entry]
 Type=Application
 Name=Downganizer
-Exec=$SCRIPT_DIR/downganizer.sh start
+Exec=$SCRIPT_DIR/downganizer start
 Comment=Organize your Downloads directory
 Icon=$SCRIPT_DIR/icon.png
 X-GNOME-Autostart-enabled=false" > ~/.config/autostart/downganizer.desktop
+    chmod +x ~/.config/autostart/downganizer.desktop
 }

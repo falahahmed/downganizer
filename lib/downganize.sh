@@ -34,7 +34,7 @@ sort_file () {
             create_dir "$dir/Archives"
             mv "$file" "$dir/Archives/"
             ;;
-        pdf|doc|docx|txt|odt)
+        pdf|doc|docx|txt|odt|ppt|pptx)
             create_dir "$dir/Documents"
             mv "$file" "$dir/Documents/"
             ;;

@@ -6,7 +6,7 @@ SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 source "$SCRIPT_DIR/lib/services.sh"
 source "$SCRIPT_DIR/lib/downganize.sh"
 
-VER=1.3.1
+VER=1.3.2
 
 args=$(getopt -o hv --long help,version -n "$0" -- "$@")
 if [[ $? -ne 0 ]]; then
