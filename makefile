@@ -1,6 +1,9 @@
 # Making the apt package from bash script
 
 pac ?= $(shell cat PAC)
+cmd=downganizer
+
+target_dir=/home/chrux/Documents/Web/adekacciorg.github.io/lin-packs/pool/main/d/$(pac)
 
 VER ?= $(shell cat VERSION)
 
@@ -23,10 +26,11 @@ default:
 	@mkdir -p $(pac)/usr/local/bin
 	@mkdir -p apt-repo/conf
 	@echo "Necessary directories created"
-	@cp $(pac).sh $(pac)/usr/local/bin/$(pac)
+	@cp $(cmd).sh $(pac)/usr/local/bin/$(cmd)
 	@cp -r lib $(pac)/usr/local/bin/
 	@echo "Script files copied"
 	@echo "$(VER)" > VERSION
+	@echo "$(pac)" > PAC
 
 install:
 	@echo "Installing build dependencies"
@@ -36,7 +40,11 @@ install:
 config:
 	@echo "Origin: $(pac)" > apt-repo/conf/distributions
 	@echo "Label: $(pac)" >> apt-repo/conf/distributions
-	@echo "Suite: stable" >> apt-repo/conf/distributions
+	@if [ "$(pac)" = "$(cmd)" ]; then \
+		echo "Suite: stable" >> apt-repo/conf/distributions ; \
+	else \
+		echo "Suite: Beta" >> apt-repo/conf/distributions ; \
+	fi
 	@echo "Codename: focal" >> apt-repo/conf/distributions
 	@echo "Version: $(VER)" >> apt-repo/conf/distributions
 	@echo "Architectures: amd64 focal" >> apt-repo/conf/distributions
@@ -80,8 +88,11 @@ build:
 	@echo "$(GREEN)Build process completed successfully!$(WHITE)"
 	
 transfer:
-	@rm /home/chrux/Documents/Web/adekacciorg.github.io/lin-packs/pool/main/d/downganizer/*
-	@cp apt-repo/pool/main/d/$(pac)/$(pac)_$(VER)_all.deb /home/chrux/Documents/Web/adekacciorg.github.io/lin-packs/pool/main/d/downganizer/
+	@if [ ! -d "$(target_dir)" ]; then \
+		mkdir "$(target_dir)" ; \
+	fi
+	@rm -f $(target_dir)/*
+	@cp apt-repo/pool/main/d/$(pac)/$(pac)_$(VER)_all.deb $(target_dir)/
 	@echo "Package transferred to pack-repo"
 
 clean:
