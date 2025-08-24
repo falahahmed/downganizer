@@ -7,16 +7,16 @@ RED='\033[0;31m'
 WHITE='\033[1;37m'
 
 dg_start () {
-    $SCRIPT_DIR/lib/monitor.sh & disown
+    $SCRIPT_DIR/lib/monitor & disown
     echo "Watches established"
     echo "Monitoring downloads"
     sleep 0.2
 }
 
 dg_stop () {
-    monitors=$(pgrep -f "$SCRIPT_DIR/lib/monitor.sh")
+    monitors=$(pgrep -f "$SCRIPT_DIR/lib/monitor")
     notifies=$(pgrep -f inotifywait)
-    count=$(pgrep -c -f "$SCRIPT_DIR/lib/monitor.sh")
+    count=$(pgrep -c -f "$SCRIPT_DIR/lib/monitor")
     if [ "$count" -eq 0 ]; then
         echo "Downganizer is not running."
         return 0
@@ -85,7 +85,7 @@ status () {
 
     inot=$(pgrep -f inotifywait | head -n 1)
     inotpid=0
-    moni=$(pgrep -f monitor.sh | head -n 1)
+    moni=$(pgrep -f monitor | head -n 1)
 
     if [[ -n "$inot" ]] && [[ -n "$moni" ]]; then
         start=$(ps -p "$inot" -o stime=)

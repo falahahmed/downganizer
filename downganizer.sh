@@ -3,16 +3,17 @@
 
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
-source "$SCRIPT_DIR/lib/services.sh"
-source "$SCRIPT_DIR/lib/downganize.sh"
+source "$SCRIPT_DIR/lib/services"
+source "$SCRIPT_DIR/lib/downganize"
+source "$SCRIPT_DIR/lib/config"
 
 VER=1.3.2
 
-if [[ ! -e "$XDG_CONFIG_HOME/downganizer.conf" ]]; then
+if [[ ! -e ~/.config/downganizer.conf ]]; then
     echo "CRITERIA=type
 CRITERIA_OPTIONS=[type date]
 NESTED=false
-NESTED_CRITERIA=null" > $XDG_CONFIG_HOME/downganizer.conf
+NESTED_CRITERIA=null" > ~/.config/downganizer.conf
 fi
 
 args=$(getopt -o hv --long help,version -n "$0" -- "$@")
@@ -70,7 +71,7 @@ if [ "$either" = true ]; then
     exit 0
 fi
 
-if [ $# -gt 1 ]; then
+if [[ $# -gt 1 && "$1" != "config" ]]; then
     echo "Too many arguments provided." >&2
     echo "Use -h or --help for usage information." >&2
     exit 1
@@ -84,6 +85,7 @@ case $1 in
     "enable") dg_enable ;;
     "disable") dg_disable ;;
     "status") dg_status ;;
+    "config") shift; dg_config $@ ;;
     "") echo "No option provided. Use -h or --help for usage information." >&2; exit 1 ;;
     *) echo "Invalid option: $1" >&2; exit 1 ;;
 esac

@@ -2,7 +2,7 @@
 
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
-source "$SCRIPT_DIR/downganize.sh"
+source "$SCRIPT_DIR/downganize"
 
 inotifywait -m ~/Downloads -e create -e moved_to 2>/dev/null|
 while read -r directory event file; do

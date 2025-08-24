@@ -1,0 +1,47 @@
+#!/bin/bash
+
+criteria=""
+isNested=false
+nested=""
+
+
+dg_config (){
+    echo $@
+    echo $#
+    if [[ $# -eq 0 ]]; then
+        config
+    fi
+
+    while [[ $# -ne 0 ]]; do
+        if [[ $# -lt 2 ]]; then
+            invalid_config;
+        fi
+        case $1 in
+            "criteria") shift; 
+                if [[ $1 == "month" || $1 == "type" ]]; then
+                    criteria=$1
+                fi
+            ;;
+            "nested") shift; 
+                if [[ $1 == "type" || $1 == "month" ]]; then
+                    isNested=true
+                    nested=$1
+                    break;
+                fi
+                if [[ $1 == "false" ]]; then break; fi
+                invalid_config
+            ;;
+            *) invalid_config ;;
+        esac
+        shift;
+    done
+
+}
+
+invalid_config() {
+    echo "Invalid configuration data. Please refer to the documentation.";
+}
+
+config() {
+    echo "Nothin here!"
+}
