@@ -8,6 +8,13 @@ source "$SCRIPT_DIR/lib/downganize.sh"
 
 VER=1.3.2
 
+if [[ ! -e "$XDG_CONFIG_HOME/downganizer.conf" ]]; then
+    echo "CRITERIA=type
+CRITERIA_OPTIONS=[type date]
+NESTED=false
+NESTED_CRITERIA=null" > $XDG_CONFIG_HOME/downganizer.conf
+fi
+
 args=$(getopt -o hv --long help,version -n "$0" -- "$@")
 if [[ $? -ne 0 ]]; then
     echo "Usage: $0 [-v | --version or -h | --help] [option]" >&2

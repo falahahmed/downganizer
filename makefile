@@ -60,9 +60,9 @@ config:
 	@echo "Depends: inotify-tools (>= 3.22.6)" >> $(pac)/DEBIAN/control
 	@echo "Architecture: all" >> $(pac)/DEBIAN/control
 	@echo "Maintainer: Falah Ahmed <kpfalah99@gmail.com>" >> $(pac)/DEBIAN/control
-	@echo "Description: A script to create a command from executable files." >> $(pac)/DEBIAN/control
-	@echo "   Currently, it is only available for files like .AppImage" >> $(pac)/DEBIAN/control
-	@echo "   I want to add more file extensions. A helping hand is always welcome." >> $(pac)/DEBIAN/control
+	@echo "Description: A script to automate organizing download files" >> $(pac)/DEBIAN/control
+	@echo "   You can utilize available options to organize your downloaded files" >> $(pac)/DEBIAN/control
+	@echo "   I'm planning to extend organizing criteria and to develop gui. A helping hand is always welcome." >> $(pac)/DEBIAN/control
 	@echo "   You can contact me at telegram: @chruxAdmin" >> $(pac)/DEBIAN/control
 	@echo "   github: @falahahmed" >> $(pac)/DEBIAN/control
 
