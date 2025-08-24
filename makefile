@@ -1,6 +1,6 @@
 # Making the apt package from bash script
 
-pac="downganizer"
+pac ?= $(shell cat PAC)
 
 VER ?= $(shell cat VERSION)
 
