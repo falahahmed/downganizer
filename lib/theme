@@ -1,0 +1,7 @@
+#!/bin/bash
+
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+BOLD='\033[1m'
+WHITE='\033[0;37m'
+REGULAR='\033[0m'

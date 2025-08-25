@@ -13,7 +13,8 @@ if [[ ! -e ~/.config/downganizer.conf ]]; then
     echo "CRITERIA=type
 CRITERIA_OPTIONS=[type date]
 NESTED=false
-NESTED_CRITERIA=null" > ~/.config/downganizer.conf
+NESTED_CRITERIA=null
+duplicates=overwrite" > ~/.config/downganizer.conf
 fi
 
 args=$(getopt -o hv --long help,version -n "$0" -- "$@")

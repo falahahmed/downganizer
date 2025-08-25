@@ -1,15 +1,21 @@
 #!/bin/bash
 
+SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+source "$SCRIPT_DIR/lib/theme"
+
 criteria=""
 isNested=false
 nested=""
+dups=""
 
 
 dg_config (){
-    echo $@
-    echo $#
     if [[ $# -eq 0 ]]; then
         config
+    fi
+
+    if [[ $1 == "help" ]]; then
+        config_help
     fi
 
     while [[ $# -ne 0 ]]; do
@@ -24,11 +30,24 @@ dg_config (){
             ;;
             "nested") shift; 
                 if [[ $1 == "type" || $1 == "month" ]]; then
+                    if [[ "$1" == "$criteria" ]]; then
+                        echo "Primary and secondary crieteria can not be the same";
+                        exit 1;
+                    fi
                     isNested=true
                     nested=$1
+                elif [[ $1 == "false" ]]; then 
+                    nested=""
+                    isNested=false
+                else
+                    invalid_config
+                fi
+            ;;
+            "duplicates") shift;
+                if [[ $1 == "overwrite" || $1 == "rename" ]]; then
+                    dups=$1;
                     break;
                 fi
-                if [[ $1 == "false" ]]; then break; fi
                 invalid_config
             ;;
             *) invalid_config ;;
@@ -36,10 +55,22 @@ dg_config (){
         shift;
     done
 
+    echo "Here is the details: 
+    criteria: $criteria
+    isNested: $isNested
+    nested: $nested
+    dups: $dups"
 }
 
 invalid_config() {
-    echo "Invalid configuration data. Please refer to the documentation.";
+    echo -e "$RED""Invalid configuration data. Please refer to the documentation.$REGULAR";
+    echo -e "Or try running $BOLD$0 config help$REGULAR"
+    exit 1;
+}
+
+config_help() {
+    echo "Hello"
+    exit 0
 }
 
 config() {

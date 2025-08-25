@@ -2,10 +2,6 @@
 
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
-GREEN='\033[0;32m'
-RED='\033[0;31m'
-WHITE='\033[1;37m'
-
 dg_start () {
     $SCRIPT_DIR/lib/monitor & disown
     echo "Watches established"
