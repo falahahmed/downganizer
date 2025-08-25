@@ -3,11 +3,6 @@
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 source "$SCRIPT_DIR/lib/theme"
 
-criteria=""
-isNested=false
-nested=""
-dups=""
-
 
 dg_config (){
     if [[ $# -eq 0 ]]; then
@@ -25,41 +20,30 @@ dg_config (){
         case $1 in
             "criteria") shift; 
                 if [[ $1 == "month" || $1 == "type" ]]; then
-                    criteria=$1
+                    set_criteria $1
+                else
+                    invalid_config
                 fi
             ;;
             "nested") shift; 
                 if [[ $1 == "type" || $1 == "month" ]]; then
-                    if [[ "$1" == "$criteria" ]]; then
-                        echo "Primary and secondary crieteria can not be the same";
-                        exit 1;
-                    fi
-                    isNested=true
-                    nested=$1
-                elif [[ $1 == "false" ]]; then 
-                    nested=""
-                    isNested=false
+                    set_nested $1
                 else
                     invalid_config
                 fi
             ;;
             "duplicates") shift;
                 if [[ $1 == "overwrite" || $1 == "rename" ]]; then
-                    dups=$1;
-                    break;
+                    set_dups $1;
+                else
+                    invalid_config
                 fi
-                invalid_config
             ;;
             *) invalid_config ;;
         esac
         shift;
     done
 
-    echo "Here is the details: 
-    criteria: $criteria
-    isNested: $isNested
-    nested: $nested
-    dups: $dups"
 }
 
 invalid_config() {
@@ -76,3 +60,34 @@ config_help() {
 config() {
     echo "Nothin here!"
 }
+
+# Individual config functions
+
+set_criteria(){
+    criteria=$(cat ~/.config/downganizer.conf | grep -m 1 "CRITERIA=" | cut -d '=' -f2)
+    if [[ $1 == "$criteria" ]]; then
+        return;
+    fi
+
+    nested=$(cat ~/.config/downganizer.conf | grep -m 1 "NESTED_CRITERIA=" | cut -d '=' -f2)
+    if [[ "$nested" == "$1" ]]; then
+        sed -i 's/NESTED=true/NESTED=false/' ~/.config/downganizer.conf
+        sed -i "s/NESTED_CRITERIA=$nested/NESTED_CRITERIA=null/" ~/.config/downganizer.conf
+    fi
+
+    sed -i "s/CRITERIA=$criteria/CRITERIA=$1/" ~/.config/downganizer.conf
+}
+
+set_nested(){
+    echo "Hello"
+}
+
+set_dups() {
+    dup=$(cat ~/.config/downganizer.conf | grep -m 1 "DUPLICATES=" | cut -d '=' -f2)
+    if [[ "$dup" == "$1" ]]; then
+        return;
+    fi
+
+    sed -i "s/DUPLICATES=$dup/DUPLICATES=$1/" ~/.config/downganizer.conf
+}
+
