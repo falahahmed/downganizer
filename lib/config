@@ -26,7 +26,7 @@ dg_config (){
                 fi
             ;;
             "nested") shift; 
-                if [[ $1 == "type" || $1 == "month" ]]; then
+                if [[ $1 == "type" || $1 == "month" || $1 == "false" ]]; then
                     set_nested $1
                 else
                     invalid_config
@@ -34,7 +34,7 @@ dg_config (){
             ;;
             "duplicates") shift;
                 if [[ $1 == "overwrite" || $1 == "rename" ]]; then
-                    set_dups $1;
+                    set_dups  $1;
                 else
                     invalid_config
                 fi
@@ -79,7 +79,27 @@ set_criteria(){
 }
 
 set_nested(){
-    echo "Hello"
+    nested=$(cat ~/.config/downganizer.conf | grep -m 1 "NESTED_CRITERIA=" | cut -d '=' -f2)
+    isNested=$(cat ~/.config/downganizer.conf | grep -m 1 "NESTED=" | cut -d '=' -f2)
+    if [[ "$nested" == "$1" || "$1" == "$isNested" ]]; then
+        return;
+    fi
+
+    criteria=$(cat ~/.config/downganizer.conf | grep -m 1 "CRITERIA=" | cut -d '=' -f2)
+    if [[ "$1" == "$criteria" ]]; then 
+        echo -e "$RED""You can't set secondary criteria same as primary!$REGULAR";
+        exit 1;
+    fi
+
+    if [[ "$1" == "false" ]]; then
+        sed -i "s/NESTED=$isNested/NESTED=false/" ~/.config/downganizer.conf
+        sed -i "s/NESTED_CRITERIA=$nested/NESTED_CRITERIA=null/" ~/.config/downganizer.conf
+        return;
+    fi
+
+    sed -i "s/NESTED=$isNested/NESTED=true/" ~/.config/downganizer.conf
+    sed -i "s/NESTED_CRITERIA=$nested/NESTED_CRITERIA=$1/" ~/.config/downganizer.conf
+    return;
 }
 
 set_dups() {
