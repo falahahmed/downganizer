@@ -3,8 +3,6 @@
 
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
-echo "command: $0"
-
 source "$SCRIPT_DIR/lib/services"
 source "$SCRIPT_DIR/lib/downganize"
 source "$SCRIPT_DIR/lib/config"
