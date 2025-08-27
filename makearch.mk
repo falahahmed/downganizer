@@ -74,3 +74,4 @@ transfer:
 clean:
 	@rm -rf arch-repo/*
 	@rm -f *.tar.gz
+	@echo "Cleaned up"
