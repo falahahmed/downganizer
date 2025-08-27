@@ -73,7 +73,9 @@ transfer:
 	@rm -f $(target_dir)/*.gz
 	@rm -f $(target_dir)/*.db
 	@rm -f $(target_dir)/*.files
+	@cp $(pac)/*.pkg.tar.zst $(target_dir)/
 	@awk "BEGIN { print $(pkgrel) + 1}" > pkgrel
+	@echo "Package transfered to man-pacs"
 
 clean:
 	@rm -rf $(pac)/*
