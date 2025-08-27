@@ -73,7 +73,7 @@ transfer:
 	@rm -f $(target_dir)/*.gz
 	@rm -f $(target_dir)/*.db
 	@rm -f $(target_dir)/*.files
-	@echo "$(pkgrel) + 1" | bc > pkgrel
+	@awk "BEGIN { print $(pkgrel) + 1}" > pkgrel
 
 clean:
 	@rm -rf $(pac)/*
