@@ -20,7 +20,7 @@ default:
 	elif [ "$(sys)" = "arch" ]; then \
 		make -f makearch.mk pac="$(pac)" 2>&1 | grep -v '^make\[1\]' ; \
 	else \
-		echo "$(RED)Invalid SYS value in SYS file. Please set it to 'deb' or 'arch'$(WHITE)"; \
+		echo -e "$(RED)Invalid SYS value in SYS file. Please set it to 'deb' or 'arch'$(WHITE)"; \
 		exit 1; \
 	fi
 
@@ -34,7 +34,7 @@ install:
 	elif [ "$(sys)" = "arch" ]; then \
 		make -f makearch.mk install 2>&1 | grep -v '^make\[1\]' ; \
 	else \
-		echo "$(RED)Invalid SYS value in SYS file. Please set it to 'deb' or 'arch'$(WHITE)"; \
+		echo -e "$(RED)Invalid SYS value in SYS file. Please set it to 'deb' or 'arch'$(WHITE)"; \
 		exit 1; \
 	fi
 
@@ -44,7 +44,7 @@ config:
 	elif [ "$(sys)" = "arch" ]; then \
 		make -f makearch.mk config 2>&1 | grep -v '^make\[1\]' ; \
 	else \
-		echo "$(RED)Invalid SYS value in SYS file. Please set it to 'deb' or 'arch'$(WHITE)"; \
+		echo -e "$(RED)Invalid SYS value in SYS file. Please set it to 'deb' or 'arch'$(WHITE)"; \
 		exit 1; \
 	fi
 
@@ -54,7 +54,7 @@ build:
 	elif [ "$(sys)" = "arch" ]; then \
 		make -f makearch.mk build 2>&1 | grep -v '^make\[1\]' ; \
 	else \
-		echo "$(RED)Invalid SYS value in SYS file. Please set it to 'deb' or 'arch'$(WHITE)"; \
+		echo -e "$(RED)Invalid SYS value in SYS file. Please set it to 'deb' or 'arch'$(WHITE)"; \
 		exit 1; \
 	fi
 	
@@ -64,7 +64,7 @@ transfer:
 	elif [ "$(sys)" = "arch" ]; then \
 		make -f makearch.mk transfer 2>&1 | grep -v '^make\[1\]' ; \
 	else \
-		echo "$(RED)Invalid SYS value in SYS file. Please set it to 'deb' or 'arch'$(WHITE)"; \
+		echo -e "$(RED)Invalid SYS value in SYS file. Please set it to 'deb' or 'arch'$(WHITE)"; \
 		exit 1; \
 	fi
 
@@ -74,6 +74,6 @@ clean:
 	elif [ "$(sys)" = "arch" ]; then \
 		make -f makearch.mk clean 2>&1 | grep -v '^make\[1\]' ; \
 	else \
-		echo "$(RED)Invalid SYS value in SYS file. Please set it to 'deb' or 'arch'$(WHITE)"; \
+		echo -e "$(RED)Invalid SYS value in SYS file. Please set it to 'deb' or 'arch'$(WHITE)"; \
 		exit 1; \
 	fi

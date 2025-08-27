@@ -4,6 +4,7 @@ downganizer.deb
 VERSION
 PAC
 SYS
+pkgrel
 downganizer.desktop
 
 apt-repo/
