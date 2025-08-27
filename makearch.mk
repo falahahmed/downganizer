@@ -11,6 +11,7 @@ VER ?= $(shell cat VERSION)
 GREEN=\e[0;32m
 RED=\e[0;31m
 WHITE=\e[1;37m
+REGULAR=\e[0m
 
 devdeps=$(shell pacman -Q base-devel pacman-contrib tar | grep -c "")
 
@@ -19,7 +20,7 @@ default:
 	@if [ $(devdeps) -eq 3 ]; then \
 		echo "Dependencies installed. Proceeding..."; \
 	else \
-		echo -e "$(RED)Dependencies are not installed.$(WHITE) Please run $(GREEN) sudo make install$(WHITE)"; \
+		echo -e "$(RED)Dependencies are not installed.$(REGULAR) Please run $(GREEN) sudo make install$(WHITE)"; \
 		exit 1; \
 	fi
 
@@ -37,7 +38,7 @@ config:
 	@echo "# Maintainer: Falah Ahmed <kpfalah99@gmail.com>" > arch-repo/PKGBUILD
 	@echo "pkgname=$(pac)" >> arch-repo/PKGBUILD
 	@echo "pkgver=$(VER)" >> arch-repo/PKGBUILD
-	@echo "pkgrel=$($(pkgrel) + 1)" >> arch-repo/PKGBUILD
+	@echo "pkgrel=$(pkgrel)" >> arch-repo/PKGBUILD
 	@echo "pkgdesc='A script to automate organizing download files" >> arch-repo/PKGBUILD
 	@echo "		You can utilize available options to organize your downloaded files" >> arch-repo/PKGBUILD
 	@echo "		I'm planning to extend organizing criteria and to develop gui. A helping hand is always welcome." >> arch-repo/PKGBUILD
@@ -47,7 +48,7 @@ config:
 	@echo "url='https://github.com/falahahmed/downganizer'" >> arch-repo/PKGBUILD
 	@echo "license=('SKIP')" >> arch-repo/PKGBUILD
 	@echo "depends=('inotify-tools>=3.22.6')" >> arch-repo/PKGBUILD
-	@echo "source=($$pkgname-$$pkgver.tar.gz)" >> arch-repo/PKGBUILD
+	@printf '%s\n' 'source=($$''pkgname-$$''pkgver.tar.gz)' >> arch-repo/PKGBUILD
 	@echo "md5sums=('SKIP')" >> arch-repo/PKGBUILD
 	@echo "" >> arch-repo/PKGBUILD
 	@echo "package() {" >> arch-repo/PKGBUILD
@@ -56,11 +57,14 @@ config:
 	@echo "  cp -r $$srcdir/$$pkgname/lib/* $$pkgdir/usr/share/$$pkgname/lib/" >> arch-repo/PKGBUILD
 	@echo "}" >> arch-repo/PKGBUILD
 
+	@echo "Created arch-repo/PKGBUILD"
+
 build:
 	# Building arch package
 	@tar czvf $(pac)-$(VER).tar.gz arch-repo
 	@mv $(pac)-$(VER).tar.gz arch-repo/
 	@cd arch-repo && makepkg -si
+	@echo -e "$(GREEN)Package built and installed successfully$(REGULAR)"
 
 transfer:
 	@if [ ! -d "$(target_dir)" ]; then \
@@ -69,7 +73,7 @@ transfer:
 	@rm -f $(target_dir)/*.gz
 	@rm -f $(target_dir)/*.db
 	@rm -f $(target_dir)/*.files
-	@echo "$(pkgrel + 1)" > pkgrel
+	@echo "$(pkgrel) + 1" | bc > pkgrel
 
 clean:
 	@rm -rf arch-repo/*

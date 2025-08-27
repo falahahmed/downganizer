@@ -8,5 +8,6 @@ pkgrel
 downganizer.desktop
 
 apt-repo/
+arch-repo/
 downganizer/
 downganizer-beta/
