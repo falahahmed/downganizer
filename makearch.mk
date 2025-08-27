@@ -8,9 +8,9 @@ target_dir=/home/chrux/Documents/adekacciorg.github.io/man-pacs
 
 VER ?= $(shell cat VERSION)
 
-GREEN=\033[0;32m
-RED=\033[0;31m
-WHITE=\033[1;37m
+GREEN=\e[0;32m
+RED=\e[0;31m
+WHITE=\e[1;37m
 
 devdeps=$(shell pacman -Q base-devel pacman-contrib tar | grep -c "")
 
@@ -19,7 +19,7 @@ default:
 	@if [ $(devdeps) -eq 3 ]; then \
 		echo "Dependencies installed. Proceeding..."; \
 	else \
-		echo "$(RED)Dependencies are not installed.$(WHITE) Please run $(GREEN) sudo make install$(WHITE)"; \
+		echo -e "$(RED)Dependencies are not installed.$(WHITE) Please run $(GREEN) sudo make install$(WHITE)"; \
 		exit 1; \
 	fi
 
@@ -31,7 +31,7 @@ default:
 install:
 	@echo "Installing build dependencies"
 	@sudo pacman -S base-devel pacman-contrib tar
-	@echo "$(GREEN)Build dependencies installed"
+	@echo -e "$(GREEN)Build dependencies installed"
 
 config:
 	@echo "# Maintainer: Falah Ahmed <kpfalah99@gmail.com>" > arch-repo/PKGBUILD
