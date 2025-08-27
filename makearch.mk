@@ -24,9 +24,9 @@ default:
 		exit 1; \
 	fi
 
-	@mkdir -p arch-repo
-	@cp -r lib arch-repo/
-	@cp $(cmd).sh arch-repo/$(cmd)
+	@mkdir -p $(pac)
+	@cp -r lib $(pac)/
+	@cp $(cmd).sh $(pac)/$(cmd)
 	@echo "Necessary directories created and files copied"
 
 install:
@@ -35,35 +35,35 @@ install:
 	@echo -e "$(GREEN)Build dependencies installed"
 
 config:
-	@echo "# Maintainer: Falah Ahmed <kpfalah99@gmail.com>" > arch-repo/PKGBUILD
-	@echo "pkgname=$(pac)" >> arch-repo/PKGBUILD
-	@echo "pkgver=$(VER)" >> arch-repo/PKGBUILD
-	@echo "pkgrel=$(pkgrel)" >> arch-repo/PKGBUILD
-	@echo "pkgdesc=A script to automate organizing download files" >> arch-repo/PKGBUILD
-# 	@echo "		You can utilize available options to organize your downloaded files" >> arch-repo/PKGBUILD
-# 	@echo "		I'm planning to extend organizing criteria and to develop gui. A helping hand is always welcome." >> arch-repo/PKGBUILD
-# 	@echo "		You can contact me at telegram: @chruxAdmin" >> arch-repo/PKGBUILD
-# 	@echo "		github: @falahahmed'" >> arch-repo/PKGBUILD
-	@echo "arch=('any')" >> arch-repo/PKGBUILD
-	@echo "url='https://github.com/falahahmed/downganizer'" >> arch-repo/PKGBUILD
-	@echo "license=('SKIP')" >> arch-repo/PKGBUILD
-	@echo "depends=('inotify-tools>=3.22.6')" >> arch-repo/PKGBUILD
-	@printf '%s\n' 'source=($$''pkgname-$$''pkgver.tar.gz)' >> arch-repo/PKGBUILD
-	@echo "md5sums=('SKIP')" >> arch-repo/PKGBUILD
-	@echo "" >> arch-repo/PKGBUILD
-	@echo "package() {" >> arch-repo/PKGBUILD
-	@printf '%s\n' '  install -Dm755 $$srcdir/$$pkgname/$(cmd) $$pkgdir/usr/bin/$(cmd)' >> arch-repo/PKGBUILD
-	@printf '%s\n' '  install -d $$pkgdir/usr/share/$$pkgname/lib' >> arch-repo/PKGBUILD
-	@printf '%s\n' '  cp -r $$srcdir/$$pkgname/lib/* $$pkgdir/usr/share/$$pkgname/lib/' >> arch-repo/PKGBUILD
-	@echo "}" >> arch-repo/PKGBUILD
+	@echo "# Maintainer: Falah Ahmed <kpfalah99@gmail.com>" > $(pac)/PKGBUILD
+	@echo "pkgname=$(pac)" >> $(pac)/PKGBUILD
+	@echo "pkgver=$(VER)" >> $(pac)/PKGBUILD
+	@echo "pkgrel=$(pkgrel)" >> $(pac)/PKGBUILD
+	@echo "pkgdesc=A script to automate organizing download files" >> $(pac)/PKGBUILD
+# 	@echo "		You can utilize available options to organize your downloaded files" >> $(pac)/PKGBUILD
+# 	@echo "		I'm planning to extend organizing criteria and to develop gui. A helping hand is always welcome." >> $(pac)/PKGBUILD
+# 	@echo "		You can contact me at telegram: @chruxAdmin" >> $(pac)/PKGBUILD
+# 	@echo "		github: @falahahmed'" >> $(pac)/PKGBUILD
+	@echo "arch=('any')" >> $(pac)/PKGBUILD
+	@echo "url='https://github.com/falahahmed/downganizer'" >> $(pac)/PKGBUILD
+	@echo "license=('SKIP')" >> $(pac)/PKGBUILD
+	@echo "depends=('inotify-tools>=3.22.6')" >> $(pac)/PKGBUILD
+	@printf '%s\n' 'source=($$''pkgname-$$''pkgver.tar.gz)' >> $(pac)/PKGBUILD
+	@echo "md5sums=('SKIP')" >> $(pac)/PKGBUILD
+	@echo "" >> $(pac)/PKGBUILD
+	@echo "package() {" >> $(pac)/PKGBUILD
+	@printf '%s\n' '  install -Dm755 $$srcdir/$$pkgname/$(cmd) $$pkgdir/usr/bin/$(cmd)' >> $(pac)/PKGBUILD
+	@printf '%s\n' '  install -d $$pkgdir/usr/share/$$pkgname/lib' >> $(pac)/PKGBUILD
+	@printf '%s\n' '  cp -r $$srcdir/$$pkgname/lib/* $$pkgdir/usr/share/$$pkgname/lib/' >> $(pac)/PKGBUILD
+	@echo "}" >> $(pac)/PKGBUILD
 
-	@echo "Created arch-repo/PKGBUILD"
+	@echo "Created $(pac)/PKGBUILD"
 
 build:
 	# Building arch package
-	@tar czvf $(pac)-$(VER).tar.gz arch-repo
-	@mv $(pac)-$(VER).tar.gz arch-repo/
-	@cd arch-repo && makepkg -si
+	@tar czvf $(pac)-$(VER).tar.gz $(pac)
+	@mv $(pac)-$(VER).tar.gz $(pac)/
+	@cd $(pac) && makepkg -si
 	@echo -e "$(GREEN)Package built and installed successfully$(REGULAR)"
 
 transfer:
@@ -76,6 +76,6 @@ transfer:
 	@echo "$(pkgrel) + 1" | bc > pkgrel
 
 clean:
-	@rm -rf arch-repo/*
+	@rm -rf $(pac)/*
 	@rm -f *.tar.gz
 	@echo "Cleaned up"
