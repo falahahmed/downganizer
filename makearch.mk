@@ -39,11 +39,11 @@ config:
 	@echo "pkgname=$(pac)" >> arch-repo/PKGBUILD
 	@echo "pkgver=$(VER)" >> arch-repo/PKGBUILD
 	@echo "pkgrel=$(pkgrel)" >> arch-repo/PKGBUILD
-	@echo "pkgdesc='A script to automate organizing download files" >> arch-repo/PKGBUILD
-	@echo "		You can utilize available options to organize your downloaded files" >> arch-repo/PKGBUILD
-	@echo "		I'm planning to extend organizing criteria and to develop gui. A helping hand is always welcome." >> arch-repo/PKGBUILD
-	@echo "		You can contact me at telegram: @chruxAdmin" >> arch-repo/PKGBUILD
-	@echo "		github: @falahahmed'" >> arch-repo/PKGBUILD
+	@echo "pkgdesc=A script to automate organizing download files" >> arch-repo/PKGBUILD
+# 	@echo "		You can utilize available options to organize your downloaded files" >> arch-repo/PKGBUILD
+# 	@echo "		I'm planning to extend organizing criteria and to develop gui. A helping hand is always welcome." >> arch-repo/PKGBUILD
+# 	@echo "		You can contact me at telegram: @chruxAdmin" >> arch-repo/PKGBUILD
+# 	@echo "		github: @falahahmed'" >> arch-repo/PKGBUILD
 	@echo "arch=('any')" >> arch-repo/PKGBUILD
 	@echo "url='https://github.com/falahahmed/downganizer'" >> arch-repo/PKGBUILD
 	@echo "license=('SKIP')" >> arch-repo/PKGBUILD
@@ -52,9 +52,9 @@ config:
 	@echo "md5sums=('SKIP')" >> arch-repo/PKGBUILD
 	@echo "" >> arch-repo/PKGBUILD
 	@echo "package() {" >> arch-repo/PKGBUILD
-	@echo "  install -Dm755 $$srcdir/$$pkgname/$(cmd) $$pkgdir/usr/bin/$(cmd)" >> arch-repo/PKGBUILD
-	@echo "  install -d $$pkgdir/usr/share/$$pkgname/lib" >> arch-repo/PKGBUILD
-	@echo "  cp -r $$srcdir/$$pkgname/lib/* $$pkgdir/usr/share/$$pkgname/lib/" >> arch-repo/PKGBUILD
+	@printf '%s\n' '  install -Dm755 $$srcdir/$$pkgname/$(cmd) $$pkgdir/usr/bin/$(cmd)' >> arch-repo/PKGBUILD
+	@printf '%s\n' '  install -d $$pkgdir/usr/share/$$pkgname/lib' >> arch-repo/PKGBUILD
+	@printf '%s\n' '  cp -r $$srcdir/$$pkgname/lib/* $$pkgdir/usr/share/$$pkgname/lib/' >> arch-repo/PKGBUILD
 	@echo "}" >> arch-repo/PKGBUILD
 
 	@echo "Created arch-repo/PKGBUILD"
