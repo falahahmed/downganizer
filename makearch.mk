@@ -37,7 +37,7 @@ config:
 	@echo "# Maintainer: Falah Ahmed <kpfalah99@gmail.com>" > arch-repo/PKGBUILD
 	@echo "pkgname=$(pac)" >> arch-repo/PKGBUILD
 	@echo "pkgver=$(VER)" >> arch-repo/PKGBUILD
-	@echo "pkgrel=$(pkgrel + 1)" >> arch-repo/PKGBUILD
+	@echo "pkgrel=$($(pkgrel) + 1)" >> arch-repo/PKGBUILD
 	@echo "pkgdesc='A script to automate organizing download files" >> arch-repo/PKGBUILD
 	@echo "		You can utilize available options to organize your downloaded files" >> arch-repo/PKGBUILD
 	@echo "		I'm planning to extend organizing criteria and to develop gui. A helping hand is always welcome." >> arch-repo/PKGBUILD
