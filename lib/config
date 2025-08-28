@@ -66,7 +66,47 @@ config_help() {
 }
 
 config() {
-    echo "Nothin here!"
+    crites=$(cat /etc/downganizer/options.conf | grep -m 1 "CRITERIAS=" | cut -d '=' -f2 )
+    crites=$(echo $crites | sed 's/\[//' | sed 's/\]//')
+    crites=($crites)
+    crites+=("somethign")
+    echo "crites: ${crites[@]}"
+    echo "count as: ${#crites[@]}"
+}
+
+select_option() {
+    local ques="$1"
+    shift;
+    local options=("$@")
+    local selected=0
+
+    echo "$ques"
+    while true; do
+        ops=""
+        for i in "${!options[@]}"; do
+            if [ $i -eq $selected ]; then
+                ops+="$GREEN${options[$i]}$WHITE | "
+            else
+                ops+="${options[$i]} | "
+            fi
+        done
+        
+        echo -e "${ops::-3}\r"
+        
+        read -rsn1 input
+        if [[ $input == $'\x1b' ]]; then
+            read -rsn2 input
+            if [[ $input == '[D' ]]; then
+                selected=$(( (selected - 1 + ${#options[@]}) % ${#options[@]} ))
+            elif [[ $input == '[C' ]]; then
+                selected=$(( (selected + 1) % ${#options[@]} ))
+            fi
+        elif [[ $input == "" ]]; then
+            return $selected
+        fi
+
+        echo -ne "\033[1A\033[2K"
+    done
 }
 
 # Individual config functions

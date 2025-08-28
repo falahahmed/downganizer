@@ -3,7 +3,8 @@
 pac ?= $(shell cat PAC)
 cmd=downganizer
 
-target_dir=/home/chrux/Documents/Web/falahahmed.github.io/lin-packs/pool/main/d/$(pac)
+folder=$(shell if [ "$(pac)" = "$(cmd)" ]; then echo "adekacciorg"; else echo "falahahmed"; fi)
+target_dir=/home/chrux/Documents/Web/$(folder).github.io/lin-packs/pool/main/d/$(pac)
 
 VER ?= $(shell cat VERSION)
 
@@ -24,6 +25,7 @@ default:
 
 	@mkdir -p $(pac)/DEBIAN
 	@mkdir -p $(pac)/usr/local/bin
+	@mkdir -p $(pac)/etc/$(cmd)
 	@mkdir -p $(pac)/usr/share/$(cmd)
 	@mkdir -p apt-repo/conf
 	@echo "Necessary directories created"
@@ -67,6 +69,11 @@ config:
 	@echo "   github: @falahahmed" >> $(pac)/DEBIAN/control
 
 	@echo "Created $(pac)/DEBIAN/control"
+
+	@echo "CRITERIAS=[type month]" > $(pac)/etc/$(cmd)/options.conf
+	@echo "DUP_METHODS=[rename overwrite]" >> $(pac)/etc/$(cmd)/options.conf
+
+	@echo "Created $(pac)/etc/$(cmd)/options.conf"
 
 build: 
 	# Building debian package
