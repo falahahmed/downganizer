@@ -3,9 +3,17 @@
 
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
-source "$SCRIPT_DIR/lib/services"
-source "$SCRIPT_DIR/lib/downganize"
-source "$SCRIPT_DIR/lib/config"
+PROD=false
+
+LIB_DIR="/usr/share/downganizer/lib"
+
+if [[ "$PROD" = false ]]; then
+    LIB_DIR="$SCRIPT_DIR/lib"
+fi
+
+source "$LIB_DIR/services"
+source "$LIB_DIR/downganize"
+source "$LIB_DIR/config"
 
 VER=1.4.0
 

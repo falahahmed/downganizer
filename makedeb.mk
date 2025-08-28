@@ -3,7 +3,7 @@
 pac ?= $(shell cat PAC)
 cmd=downganizer
 
-target_dir=/home/chrux/Documents/Web/adekacciorg.github.io/lin-packs/pool/main/d/$(pac)
+target_dir=/home/chrux/Documents/Web/falahahmed.github.io/lin-packs/pool/main/d/$(pac)
 
 VER ?= $(shell cat VERSION)
 
@@ -24,10 +24,12 @@ default:
 
 	@mkdir -p $(pac)/DEBIAN
 	@mkdir -p $(pac)/usr/local/bin
+	@mkdir -p $(pac)/usr/share/$(cmd)
 	@mkdir -p apt-repo/conf
 	@echo "Necessary directories created"
 	@cp $(cmd).sh $(pac)/usr/local/bin/$(cmd)
-	@cp -r lib $(pac)/usr/local/bin/
+	@cp -r lib $(pac)/usr/share/$(cmd)/
+	@sed -i 's/PROD=false/PROD=true/' $(pac)/usr/local/bin/$(cmd) $(pac)/usr/share/$(cmd)/lib/*
 	@echo "Script files copied"
 
 install:
@@ -72,7 +74,7 @@ build:
 	@echo "Debian package built: $(pac).deb"
 
 	# make deb file executable
-	@sudo chmod 755 $(pac).deb
+	@chmod 755 $(pac).deb
 
 	# update apt repository
 	@reprepro -b apt-repo --ignore=wrongdistribution includedeb focal $(pac).deb
@@ -82,7 +84,7 @@ build:
 	@cd apt-repo && dpkg-scanpackages --arch all pool/ > Packages
 	@cd apt-repo && gzip -kf Packages
 	@echo "Packages file created and compressed"
-	@sudo chmod 755 apt-repo/pool/main/d/$(pac)/$(pac)_$(VER)_all.deb
+	@chmod 755 apt-repo/pool/main/d/$(pac)/$(pac)_$(VER)_all.deb
 	@echo "$(GREEN)Build process completed successfully!$(WHITE)"
 	
 transfer:

@@ -1,8 +1,15 @@
 #!/bin/bash
 
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+LIB_DIR="/usr/share/downganizer/lib"
 
-source "$SCRIPT_DIR/downganize"
+PROD=false
+
+if [[ "$PROD" = false ]]; then
+    LIB_DIR="$SCRIPT_DIR/lib"
+fi
+
+source "$LIB_DIR/theme"
 
 inotifywait -m ~/Downloads -e create -e moved_to 2>/dev/null|
 while read -r directory event file; do
