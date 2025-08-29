@@ -66,12 +66,54 @@ config_help() {
 }
 
 config() {
+    criteria=$(cat ~/.config/downganizer.conf | grep -m 1 "CRITERIA=" | cut -d '=' -f2)
+
+    echo -e "$GREEN""Current configurations: $WHITE$BOLD"
+    cat ~/.config/downganizer.conf | sed 's/_/ /' | sed 's/=/: /' | sed 's/^/   /'
+    echo -e "$REGULAR"
+
     crites=$(cat /etc/downganizer/options.conf | grep -m 1 "CRITERIAS=" | cut -d '=' -f2 )
-    crites=$(echo $crites | sed 's/\[//' | sed 's/\]//')
-    crites=($crites)
-    crites+=("somethign")
-    echo "crites: ${crites[@]}"
-    echo "count as: ${#crites[@]}"
+    crites=($(echo $crites | sed 's/\[//' | sed 's/\]//'))
+    crites+=("skip")
+
+    select_option "Select primary criteria:" "${crites[@]}"
+    res=$?
+    
+    if [[ ${crites[$res]} != "skip" ]]; then
+        set_criteria ${crites[$res]}
+    fi
+
+
+    criteria=$(cat ~/.config/downganizer.conf | grep -m 1 "CRITERIA=" | cut -d '=' -f2)
+
+    nests=$(cat /etc/downganizer/options.conf | grep -m 1 "CRITERIAS=" | cut -d '=' -f2)
+    nests=($(echo $nests | sed 's/\[//' | sed 's/\]//' |  sed "s/$criteria//" ))
+    nests+=("disable" "skip")
+
+    select_option "Select secondary criteria: " "${nests[@]}"
+    res=$?
+
+    if [[ ${nests[$res]} == "disable" ]]; then
+        set_nested false
+    elif [[ ${nests[$res]} != "skip" ]]; then
+        set_nested ${nests[$res]}
+    fi
+
+    dups=$(cat /etc/downganizer/options.conf | grep -m 1 "DUP_METHODS=" | cut -d '=' -f2)
+    dups=($(echo $dups | sed 's/\[//' | sed 's/\]//'))
+    dups+=("skip")
+
+    select_option "How to manage duplicate file names: " "${dups[@]}"
+    res=$?
+
+    if [[ ${dups[$res]} != "skip" ]]; then
+        set_dups ${dups[$res]}
+    fi
+
+    echo ""
+    echo -e "$GREEN""Updated configurations: $WHITE$BOLD"
+    cat ~/.config/downganizer.conf | sed 's/_/ /' | sed 's/=/: /' | sed 's/^/   /'
+    exit 0
 }
 
 select_option() {
