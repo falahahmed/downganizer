@@ -17,11 +17,20 @@ source "$LIB_DIR/config"
 
 VER=1.4.0
 
+write_default_config(){
+    echo "[v$VER]" > ~/.config/downganizer.conf
+    echo "CRITERIA=type" >> ~/.config/downganizer.conf
+    echo "NESTED=false" >> ~/.config/downganizer.conf
+    echo "DUPLICATES=overwrite" >> ~/.config/downganizer.conf
+}
+
 if [[ ! -e ~/.config/downganizer.conf ]]; then
-    echo "CRITERIA=type
-NESTED=false
-NESTED_CRITERIA=null
-DUPLICATES=overwrite" > ~/.config/downganizer.conf
+    write_default_config
+else
+    prev_conf_file=$(head -n 1 ~/.config/downganizer.conf)
+    if [[ "$prev_conf_file" != "[v$VER]" ]]; then
+        write_default_config
+    fi
 fi
 
 args=$(getopt -o hv --long help,version -n "$0" -- "$@")

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+get_config(){
+	conf="$1"
+	val=$(cat ~/.config/downganizer.conf | grep -m 1 "$conf=" | cut -d '=' -f2)
+	echo $val
+}
+
+get_conf_options(){
+	conf="$1"
+	val=$(cat /etc/downganizer/options.conf | grep -m 1 "$conf=" | cut -d '=' -f2 | sed 's/\[//' | sed 's/\]//' )
+	val=($val)
+	echo ${val[@]}
+}

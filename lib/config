@@ -10,7 +10,7 @@ if [[ "$PROD" = false ]]; then
 fi
 
 source "$LIB_DIR/theme"
-
+source "$LIB_DIR/utils"
 
 dg_config (){
     if [[ $# -eq 0 ]]; then
@@ -94,20 +94,19 @@ config_help() {
 
 show_config(){
     echo -e "$BOLD""Current configurations: $WHITE"
-    cat ~/.config/downganizer.conf | sed 's/_/ /' | sed 's/=/: /' | sed 's/^/   /'
+    cat ~/.config/downganizer.conf | sed 's/false/disabled/' | sed 's/=/: /' | sed 's/^/   /'
     exit 0
 }
 
 config() {
-    criteria=$(cat ~/.config/downganizer.conf | grep -m 1 "CRITERIA=" | cut -d '=' -f2)
+    criteria=$(get_config "CRITERIA")
 
     prev_conf=$(cat ~/.config/downganizer.conf)
     echo -e "$GREEN""Current configurations: $WHITE$BOLD"
     cat ~/.config/downganizer.conf | sed 's/_/ /' | sed 's/=/: /' | sed 's/^/   /'
     echo -e "$REGULAR"
 
-    crites=$(cat /etc/downganizer/options.conf | grep -m 1 "CRITERIAS=" | cut -d '=' -f2 )
-    crites=($(echo $crites | sed 's/\[//' | sed 's/\]//'))
+    crites=($(get_conf_options "CRITERIAS"))
     crites+=("skip")
 
     select_option "Select primary criteria:" "${crites[@]}"
@@ -118,10 +117,10 @@ config() {
     fi
 
 
-    criteria=$(cat ~/.config/downganizer.conf | grep -m 1 "CRITERIA=" | cut -d '=' -f2)
+    criteria=$(get_config "CRITERIA")
 
-    nests=$(cat /etc/downganizer/options.conf | grep -m 1 "CRITERIAS=" | cut -d '=' -f2)
-    nests=($(echo $nests | sed 's/\[//' | sed 's/\]//' |  sed "s/$criteria//" ))
+    nests=($(get_conf_options "CRITERIAS"))
+    nests=(${nests[@]/$criteria/})
     nests+=("disable" "skip")
 
     select_option "Select secondary criteria: " "${nests[@]}"
@@ -133,8 +132,7 @@ config() {
         set_nested ${nests[$res]}
     fi
 
-    dups=$(cat /etc/downganizer/options.conf | grep -m 1 "DUP_METHODS=" | cut -d '=' -f2)
-    dups=($(echo $dups | sed 's/\[//' | sed 's/\]//'))
+    dups=($(get_conf_options "DUP_METHODS"))
     dups+=("skip")
 
     select_option "How to manage duplicate file names: " "${dups[@]}"
@@ -193,46 +191,37 @@ select_option() {
 # Individual config functions
 
 set_criteria(){
-    criteria=$(cat ~/.config/downganizer.conf | grep -m 1 "CRITERIA=" | cut -d '=' -f2)
+    criteria=$(get_config "CRITERIA")
     if [[ $1 == "$criteria" ]]; then
         return;
     fi
 
-    nested=$(cat ~/.config/downganizer.conf | grep -m 1 "NESTED_CRITERIA=" | cut -d '=' -f2)
+    nested=$(get_config "NESTED")
     if [[ "$nested" == "$1" ]]; then
-        sed -i 's/NESTED=true/NESTED=false/' ~/.config/downganizer.conf
-        sed -i "s/NESTED_CRITERIA=$nested/NESTED_CRITERIA=null/" ~/.config/downganizer.conf
+        sed -i "s/NESTED=$nested/NESTED=false/" ~/.config/downganizer.conf
     fi
 
     sed -i "s/CRITERIA=$criteria/CRITERIA=$1/" ~/.config/downganizer.conf
 }
 
 set_nested(){
-    nested=$(cat ~/.config/downganizer.conf | grep -m 1 "NESTED_CRITERIA=" | cut -d '=' -f2)
-    isNested=$(cat ~/.config/downganizer.conf | grep -m 1 "NESTED=" | cut -d '=' -f2)
-    if [[ "$nested" == "$1" || "$1" == "$isNested" ]]; then
+    nested=$(get_config "NESTED")
+    if [[ "$nested" == "$1" ]]; then
         return;
     fi
 
-    criteria=$(cat ~/.config/downganizer.conf | grep -m 1 "CRITERIA=" | cut -d '=' -f2)
+    criteria=$(get_config "CRITERIA")
     if [[ "$1" == "$criteria" ]]; then 
         echo -e "$RED""You can't set secondary criteria same as primary!$REGULAR";
         exit 1;
     fi
 
-    if [[ "$1" == "false" ]]; then
-        sed -i "s/NESTED=$isNested/NESTED=false/" ~/.config/downganizer.conf
-        sed -i "s/NESTED_CRITERIA=$nested/NESTED_CRITERIA=null/" ~/.config/downganizer.conf
-        return;
-    fi
-
-    sed -i "s/NESTED=$isNested/NESTED=true/" ~/.config/downganizer.conf
-    sed -i "s/NESTED_CRITERIA=$nested/NESTED_CRITERIA=$1/" ~/.config/downganizer.conf
+    sed -i "s/NESTED=$nested/NESTED=$1/" ~/.config/downganizer.conf
     return;
 }
 
 set_dups() {
-    dup=$(cat ~/.config/downganizer.conf | grep -m 1 "DUPLICATES=" | cut -d '=' -f2)
+    dup=$(get_config "DUPLICATES")
     if [[ "$dup" == "$1" ]]; then
         return;
     fi
