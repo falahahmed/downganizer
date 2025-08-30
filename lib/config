@@ -101,6 +101,7 @@ show_config(){
 config() {
     criteria=$(cat ~/.config/downganizer.conf | grep -m 1 "CRITERIA=" | cut -d '=' -f2)
 
+    prev_conf=$(cat ~/.config/downganizer.conf)
     echo -e "$GREEN""Current configurations: $WHITE$BOLD"
     cat ~/.config/downganizer.conf | sed 's/_/ /' | sed 's/=/: /' | sed 's/^/   /'
     echo -e "$REGULAR"
@@ -144,6 +145,11 @@ config() {
     fi
 
     echo ""
+    new_conf=$(cat ~/.config/downganizer.conf)
+    if [[ $prev_conf == $new_conf ]]; then
+        echo -e "$YELLOW""No changes made to configurations.$REGULAR"
+        exit 0
+    fi
     echo -e "$GREEN""Updated configurations: $WHITE$BOLD"
     cat ~/.config/downganizer.conf | sed 's/_/ /' | sed 's/=/: /' | sed 's/^/   /'
     exit 0
