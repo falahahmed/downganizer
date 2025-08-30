@@ -1,22 +1,41 @@
 #!/bin/bash
 
-create_dir () {
-    local dir="$1"
-    if [[ ! -d "$dir" ]]; then
-        mkdir -p "$dir"
-    fi
-}
+PROD=false
+
+LIB_DIR="/usr/share/downganizer/lib"
+
+if [[ "$PROD" = false ]]; then
+    LIB_DIR="$SCRIPT_DIR/lib"
+fi
+
+source "$LIB_DIR/utils"
 
 sort_file () {
     local file="$1"
     local dir="$HOME/Downloads"
 
     local siz=$(stat -c %s "$file")
-
-    ext=$(echo "$file" | rev | cut -d '.' -f1 | rev)
     if [ "$siz" -eq 0 ]; then
         return
     fi
+
+    primary=$(get_config "CRITERIA")
+    secondary=$(get_config "NESTED")
+
+    if [[ "$primary" == "type" ]]; then
+        type_sort "$file" "$dir"
+    elif [[ "$primary" == "month" ]]; then
+        month_sort "$file" "$dir"
+    fi
+
+}
+
+type_sort() {
+
+    local file="$1"
+    local dir="$2"
+
+    ext=$(echo "$file" | rev | cut -d '.' -f1 | rev)
     case "$ext" in
         jpg|jpeg|png|gif|bmp)
             create_dir "$dir/Images"
@@ -52,6 +71,10 @@ sort_file () {
     esac
 }
 
+month_sort(){
+    echo "Month sort not implemented yet."
+}
+
 downganize () {
     local dir="$HOME/Downloads"
     
@@ -60,4 +83,11 @@ downganize () {
             sort_file "$file"
         fi
     done < <(find "$dir" -maxdepth 1 -type f)
+}
+
+create_dir () {
+    local dir="$1"
+    if [[ ! -d "$dir" ]]; then
+        mkdir -p "$dir"
+    fi
 }
