@@ -98,7 +98,6 @@ transfer:
 	@if [ ! -d "$(target_dir)" ]; then \
 		mkdir -p "$(target_dir)" ; \
 	fi
-	@rm -f $(target_dir)/*
 	@cp apt-repo/pool/main/d/$(pac)/$(pac)_$(VER)_all.deb $(target_dir)/
 	@echo "Package transferred to pack-repo"
 

@@ -21,6 +21,10 @@ dg_config (){
         config_help
     fi
 
+    if [[ $1 == "show" ]]; then
+        show_config
+    fi
+
     while [[ $# -ne 0 ]]; do
         if [[ $# -lt 2 ]]; then
             invalid_config;
@@ -61,7 +65,36 @@ invalid_config() {
 }
 
 config_help() {
-    echo "Hello"
+    echo "For more detailed information, please refer to the documentation at:"
+    echo "  https://adekacci.in/projects/downganizer/"
+    echo ""
+
+    echo -e "To see ${BOLD}current configurations$REGULAR, run:"
+    echo -e "  $GREEN$0 config show$REGULAR"
+    echo ""
+
+    echo -e "$BOLD""Usage:$REGULAR"
+    echo "  $0 config [options]"
+    echo ""
+
+    echo "Example:"
+    echo -e "  $BOLD$0 config criteria month$REGULAR"
+    echo "This command sets the primary criteria for organizing files to 'month'."
+    echo ""
+
+    echo -e "$BOLD""Options:$REGULAR"
+    echo -e "  $BOLD""criteria [month/type]$REGULAR: Set the primary criteria for organizing files."
+    echo -e "  $BOLD""nested [type/month/false]$REGULAR: Set the secondary criteria for organizing files or disable it."
+    echo -e "  $BOLD""duplicates [overwrite/rename]$REGULAR: Set how to handle duplicate file names."
+    echo ""
+
+    echo -e "$BOLD""You can also run '$GREEN$0 config$WHITE$BOLD' without any options to enter an interactive configuration mode.$REGULAR"
+    exit 0
+}
+
+show_config(){
+    echo -e "$BOLD""Current configurations: $WHITE"
+    cat ~/.config/downganizer.conf | sed 's/_/ /' | sed 's/=/: /' | sed 's/^/   /'
     exit 0
 }
 
