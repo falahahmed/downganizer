@@ -33,7 +33,7 @@ else
     fi
 fi
 
-args=$(getopt -o hv --long help,version -n "$0" -- "$@")
+args=$(getopt -o hv --long help,version,dry-run -n "$0" -- "$@")
 if [[ $? -ne 0 ]]; then
     echo "Usage: $0 [-v | --version or -h | --help] [option]" >&2
     exit 1
@@ -69,6 +69,15 @@ while true; do
     case "$1" in
         -v|--version) version=true; shift ;;
         -h|--help) help=true; shift ;;
+        --dry-run) shift ; shift ; # shifting dry-run and --
+            if [[ "$1" != "do" ]]; then
+                echo "The --dry-run flag can only be used with the 'do' option." >&2
+                exit 1
+            else
+                downganize_dry
+                exit 0
+            fi
+        ;;
         --) shift; break ;;
         *) echo "Internal error"; exit 1 ;;
     esac

@@ -10,6 +10,32 @@ fi
 
 source "$LIB_DIR/utils"
 
+downganize () {
+    local dir="$HOME/Downloads"
+    
+    while IFS= read -r file; do
+        if [ "$file" ] ; then
+            dest=$(sort_file "$file")
+            if [[ -n "$dest" ]]; then
+                mv -f "$file" "$dest/"
+            fi
+        fi
+    done < <(find "$dir" -maxdepth 1 -type f)
+}
+
+downganize_dry () {
+    local dir="$HOME/Downloads"
+    
+    while IFS= read -r file; do
+        if [ "$file" ] ; then
+            dest=$(sort_file "$file")
+            if [[ -n "$dest" ]]; then
+                echo "Would move '$file' to '$dest/'"
+            fi
+        fi
+    done < <(find "$dir" -maxdepth 1 -type f)
+}
+
 sort_file () {
     local file="$1"
     local dir="$HOME/Downloads"
@@ -32,22 +58,19 @@ sort_file () {
         exit 1
     fi
 
-    cr_month=$(stat -c %w "$file" )
-    cr_month=$(date -d "$cr_month" +"%b %Y")
-
     if [[ "$primary" == "type" ]]; then
         dir=$(type_sort "$file" "$dir")
     elif [[ "$primary" == "month" ]]; then
-        dir=$(month_sort "$file" "$dir" "$cr_month")
+        dir=$(month_sort "$file" "$dir")
     fi
-
-    file="$dir/$(basename "$file")"
 
     if [[ "$secondary" == "type" ]]; then
         dir=$(type_sort "$file" "$dir")
     elif [[ "$secondary" == "month" ]]; then
-        dir=$(month_sort "$file" "$dir" "$cr_month")
+        dir=$(month_sort "$file" "$dir")
     fi
+
+    echo "$dir"
 }
 
 type_sort() {
@@ -81,7 +104,6 @@ type_sort() {
     esac
 
     create_dir "$dir"
-    mv "$file" "$dir/"
 
     echo "$dir"
 }
@@ -89,24 +111,14 @@ type_sort() {
 month_sort(){
     local file="$1"
     local dir="$2"
-    local month="$3"
+    local month=$(stat -c %w "$file" )
+    month=$(date -d "$month" +"%b %Y")
 
     dir="$dir/$month"
 
     create_dir "$dir"
 
-    mv "$file" "$dir/"
     echo "$dir"
-}
-
-downganize () {
-    local dir="$HOME/Downloads"
-    
-    while IFS= read -r file; do
-        if [ "$file" ] ; then
-            sort_file "$file"
-        fi
-    done < <(find "$dir" -maxdepth 1 -type f)
 }
 
 create_dir () {
