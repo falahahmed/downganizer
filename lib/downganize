@@ -19,15 +19,35 @@ sort_file () {
         return
     fi
 
+    local ext=$(echo "$file" | rev | cut -d '.' -f1 | rev)
+    if [[ "$ext" == "temp" ]]; then
+        return
+    fi
+
     primary=$(get_config "CRITERIA")
     secondary=$(get_config "NESTED")
 
-    if [[ "$primary" == "type" ]]; then
-        type_sort "$file" "$dir"
-    elif [[ "$primary" == "month" ]]; then
-        month_sort "$file" "$dir"
+    if [[ "$primary" == "$secondary" ]]; then
+        echo -e "${RED}Something went wrong. Please check your config file."
+        exit 1
     fi
 
+    cr_month=$(stat -c %w "$file" )
+    cr_month=$(date -d "$cr_month" +"%b %Y")
+
+    if [[ "$primary" == "type" ]]; then
+        dir=$(type_sort "$file" "$dir")
+    elif [[ "$primary" == "month" ]]; then
+        dir=$(month_sort "$file" "$dir" "$cr_month")
+    fi
+
+    file="$dir/$(basename "$file")"
+
+    if [[ "$secondary" == "type" ]]; then
+        dir=$(type_sort "$file" "$dir")
+    elif [[ "$secondary" == "month" ]]; then
+        dir=$(month_sort "$file" "$dir" "$cr_month")
+    fi
 }
 
 type_sort() {
@@ -38,41 +58,45 @@ type_sort() {
     ext=$(echo "$file" | rev | cut -d '.' -f1 | rev)
     case "$ext" in
         jpg|jpeg|png|gif|bmp)
-            create_dir "$dir/Images"
-            mv "$file" "$dir/Images/"
+            dir="$dir/Images"
             ;;
         mp4|mkv|avi|mov|flv)
-            create_dir "$dir/Videos"
-            mv "$file" "$dir/Videos/"
+            dir="$dir/Videos"
             ;;
         mp3|wav|flac|aac|ogg)
-            create_dir "$dir/Music"
-            mv "$file" "$dir/Music/"
+            dir="$dir/Music"
             ;;
         zip|tar|gz|rar|7z)
-            create_dir "$dir/Archives"
-            mv "$file" "$dir/Archives/"
+            dir="$dir/Archives"
             ;;
         pdf|doc|docx|txt|odt|ppt|pptx)
-            create_dir "$dir/Documents"
-            mv "$file" "$dir/Documents/"
+            dir="$dir/Documents"
             ;;
         deb|rpm|exe|appimage|sh)
-            create_dir "$dir/Installers"
-            mv "$file" "$dir/Installers/"
-            ;;
-        part)
-            return
+            dir="$dir/Installers"
             ;;
         *)
-            create_dir "$dir/Others"
-            mv "$file" "$dir/Others/"
+            dir="$dir/Others"
             ;;
     esac
+
+    create_dir "$dir"
+    mv "$file" "$dir/"
+
+    echo "$dir"
 }
 
 month_sort(){
-    echo "Month sort not implemented yet."
+    local file="$1"
+    local dir="$2"
+    local month="$3"
+
+    dir="$dir/$month"
+
+    create_dir "$dir"
+
+    mv "$file" "$dir/"
+    echo "$dir"
 }
 
 downganize () {
