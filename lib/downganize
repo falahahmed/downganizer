@@ -17,7 +17,12 @@ downganize () {
         if [ "$file" ] ; then
             dest=$(sort_file "$file")
             if [[ -n "$dest" ]]; then
-                mv -f "$file" "$dest/"
+                new_file=$(basename "$file")
+                dups=$(get_config "DUPLICATES")
+                if [[ "$dups" == "rename" ]]; then
+                    new_file=$(rename_file "$dest/$(basename "$file")")
+                fi
+                mv -f "$file" "$dest/$new_file"
             fi
         fi
     done < <(find "$dir" -maxdepth 1 -type f)
@@ -30,6 +35,12 @@ downganize_dry () {
         if [ "$file" ] ; then
             dest=$(sort_file "$file")
             if [[ -n "$dest" ]]; then
+                new_file=$(basename "$file")
+                dups=$(get_config "DUPLICATES")
+                if [[ "$dups" == "rename" ]]; then
+                    new_file=$(rename_file "$dest/$(basename "$file")")
+                    echo "Would rename $file to $new_file"
+                fi
                 echo "Would move '$file' to '$dest/'"
             fi
         fi
@@ -71,6 +82,25 @@ sort_file () {
     fi
 
     echo "$dir"
+}
+
+rename_file(){
+    if [[ -e "$1" ]]; then
+        base=$(basename "$1")
+        dir=$(dirname "$1")
+        name="${base%.*}"
+        ext="${base##*.}"
+        count=1
+        new_name="$name-$count.$ext"
+        while [[ -e "$dir/$new_name" ]]; do
+            ((count++))
+            new_name="$name-$count.$ext"
+        done
+        echo "$new_name"
+    else
+        base=$(basename "$1")
+        echo "$base"
+    fi
 }
 
 type_sort() {
