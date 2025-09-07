@@ -1,18 +1,25 @@
 #!/bin/bash
 
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+LIB_DIR="/usr/share/downganizer/lib"
+
+PROD=false
+
+if [[ "$PROD" = false ]]; then
+    LIB_DIR="$SCRIPT_DIR/lib"
+fi
 
 dg_start () {
-    $SCRIPT_DIR/lib/monitor & disown
+    $LIB_DIR/lib/monitor & disown
     echo "Watches established"
     echo "Monitoring downloads"
     sleep 0.2
 }
 
 dg_stop () {
-    monitors=$(pgrep -f "$SCRIPT_DIR/lib/monitor")
+    monitors=$(pgrep -f "$LIB_DIR/lib/monitor")
     notifies=$(pgrep -f inotifywait)
-    count=$(pgrep -c -f "$SCRIPT_DIR/lib/monitor")
+    count=$(pgrep -c -f "$LIB_DIR/lib/monitor")
     if [ "$count" -eq 0 ]; then
         echo "Downganizer is not running."
         return 0
