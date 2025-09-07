@@ -101,8 +101,7 @@ status () {
     Loaded: $load
     Status: $status
     CPU Usage: $cpu%
-    Memory Usage: $mem%
-    Press 'q' to exit"
+    Memory Usage: $mem%"
 }
 
 dg_status() {
