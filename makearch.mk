@@ -27,6 +27,7 @@ default:
 	@mkdir -p $(pac)
 	@cp -r lib $(pac)/
 	@cp $(cmd).sh $(pac)/$(cmd)
+	@sed -i 's/PROD=false/PROD=true/' $(pac)/$(cmd) $(pac)/lib/*
 	@echo "Necessary directories created and files copied"
 
 install:
@@ -35,6 +36,11 @@ install:
 	@echo -e "$(GREEN)Build dependencies installed"
 
 config:
+	@echo "CRITERIAS=[type month]" > $(pac)/options.conf
+	@echo "DUP_METHODS=[rename overwrite]" >> $(pac)/options.conf
+
+	@echo "Created $(pac)/etc/$(cmd)/options.conf"
+	
 	@echo "# Maintainer: Falah Ahmed <kpfalah99@gmail.com>" > $(pac)/PKGBUILD
 	@echo "pkgname=$(pac)" >> $(pac)/PKGBUILD
 	@echo "pkgver=$(VER)" >> $(pac)/PKGBUILD
@@ -54,6 +60,8 @@ config:
 	@echo "package() {" >> $(pac)/PKGBUILD
 	@printf '%s\n' '  install -Dm755 $$srcdir/$$pkgname/$(cmd) $$pkgdir/usr/bin/$(cmd)' >> $(pac)/PKGBUILD
 	@printf '%s\n' '  install -d $$pkgdir/usr/share/$$pkgname/lib' >> $(pac)/PKGBUILD
+	@printf '%s\n' '  install -d $$pkgdir/etc/$$pkgname' >> $(pac)/PKGBUILD
+	@printf '%s\n' '  cp $$srcdir/$$pkgname/options.conf $$pkgdir/etc/$$pkgname/' >> $(pac)/PKGBUILD
 	@printf '%s\n' '  cp -r $$srcdir/$$pkgname/lib/* $$pkgdir/usr/share/$$pkgname/lib/' >> $(pac)/PKGBUILD
 	@echo "}" >> $(pac)/PKGBUILD
 
