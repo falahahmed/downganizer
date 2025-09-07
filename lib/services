@@ -10,16 +10,16 @@ if [[ "$PROD" = false ]]; then
 fi
 
 dg_start () {
-    $LIB_DIR/lib/monitor & disown
+    $LIB_DIR/monitor & disown
     echo "Watches established"
     echo "Monitoring downloads"
     sleep 0.2
 }
 
 dg_stop () {
-    monitors=$(pgrep -f "$LIB_DIR/lib/monitor")
+    monitors=$(pgrep -f "$LIB_DIR/monitor")
     notifies=$(pgrep -f inotifywait)
-    count=$(pgrep -c -f "$LIB_DIR/lib/monitor")
+    count=$(pgrep -c -f "$LIB_DIR/monitor")
     if [ "$count" -eq 0 ]; then
         echo "Downganizer is not running."
         return 0
