@@ -10,29 +10,6 @@ All notable changes (starting from v1.0) will be documented here
 - Fixed
 - Security -->
 
-## v1.4.0 - date [Current]
-
-### Added
-
-- Added another criteria for organizing. ie, organizing by downloaded month.
-- Option for nested organizing based on two different criterias.
-- Renaming the file in case it already exists in the destination (organized) directory.
-- Added some configuration options that user can modify:
-	- file organizing criteria
-	- whether to do nested organizing
-	- what to do with same filename
-- CLI interactive configurations
-- --dry-run option to check what changes will be made without actually moving files
-
-### Changed
-
-- library files moved from default folder to usr/share/downganizer/
-
-### Fixed
-
-- Incorrect output in `status`
-
-
 ## v1.3.2 - 18/07/2025
 
 ### Fixed
