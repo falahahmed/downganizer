@@ -6,7 +6,7 @@ LIB_DIR="/usr/share/downganizer/lib"
 PROD=false
 
 if [[ "$PROD" = false ]]; then
-    LIB_DIR="$SCRIPT_DIR/lib"
+    LIB_DIR=$(echo "$SCRIPT_DIR" | sed 's/\/lib$//')/lib
 fi
 
 dg_start () {

@@ -5,7 +5,7 @@ PROD=false
 LIB_DIR="/usr/share/downganizer/lib"
 
 if [[ "$PROD" = false ]]; then
-    LIB_DIR="$SCRIPT_DIR/lib"
+    LIB_DIR=$(echo "$SCRIPT_DIR" | sed 's/\/lib$//')/lib
 fi
 
 source "$LIB_DIR/utils"
@@ -19,7 +19,7 @@ downganize () {
             if [[ -n "$dest" ]]; then
                 new_file=$(basename "$file")
                 dups=$(get_config "DUPLICATES")
-                if [[ "$dups" == "rename" ]]; then
+                if [[ "$dups" == "rename" && -e "$dest/$(basename "$file")" ]]; then
                     new_file=$(rename_file "$dest/$(basename "$file")")
                 fi
                 mv -f "$file" "$dest/$new_file"
@@ -37,7 +37,7 @@ downganize_dry () {
             if [[ -n "$dest" ]]; then
                 new_file=$(basename "$file")
                 dups=$(get_config "DUPLICATES")
-                if [[ "$dups" == "rename" ]]; then
+                if [[ "$dups" == "rename" && -e "$dest/$(basename "$file")" ]]; then
                     new_file=$(rename_file "$dest/$(basename "$file")")
                     echo "Would rename $file to $new_file"
                 fi
@@ -82,25 +82,6 @@ sort_file () {
     fi
 
     echo "$dir"
-}
-
-rename_file(){
-    if [[ -e "$1" ]]; then
-        base=$(basename "$1")
-        dir=$(dirname "$1")
-        name="${base%.*}"
-        ext="${base##*.}"
-        count=1
-        new_name="$name-$count.$ext"
-        while [[ -e "$dir/$new_name" ]]; do
-            ((count++))
-            new_name="$name-$count.$ext"
-        done
-        echo "$new_name"
-    else
-        base=$(basename "$1")
-        echo "$base"
-    fi
 }
 
 type_sort() {

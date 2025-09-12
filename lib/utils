@@ -12,3 +12,22 @@ get_conf_options(){
 	val=($val)
 	echo ${val[@]}
 }
+
+rename_file(){
+    if [[ -e "$1" ]]; then
+        base=$(basename "$1")
+        dir=$(dirname "$1")
+        name="${base%.*}"
+        ext="${base##*.}"
+        count=1
+        new_name="$name-$count.$ext"
+        while [[ -e "$dir/$new_name" ]]; do
+            ((count++))
+            new_name="$name-$count.$ext"
+        done
+        echo "$new_name"
+    else
+        base=$(basename "$1")
+        echo "$base"
+    fi
+}

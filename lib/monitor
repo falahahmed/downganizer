@@ -6,10 +6,12 @@ LIB_DIR="/usr/share/downganizer/lib"
 PROD=false
 
 if [[ "$PROD" = false ]]; then
-    LIB_DIR="$SCRIPT_DIR/lib"
+    LIB_DIR=$(echo "$SCRIPT_DIR" | sed 's/\/lib$//')/lib
 fi
 
 source "$LIB_DIR/theme"
+source "$LIB_DIR/utils"
+source "$LIB_DIR/downganize"
 
 inotifywait -m ~/Downloads -e create -e moved_to 2>/dev/null|
 while read -r directory event file; do
@@ -24,5 +26,13 @@ while read -r directory event file; do
             continue
         fi
     fi
-    sort_file "$HOME/Downloads/$file"
+    dest=$(sort_file "$HOME/Downloads/$file")
+    if [[ -n "$dest" ]]; then
+        new_file=$(basename "$file")
+        dups=$(get_config "DUPLICATES")
+        if [[ "$dups" == "rename" ]]; then
+            new_file=$(rename_file "$dest/$(basename "$file")")
+        fi
+        mv -f "$HOME/Downloads/$file" "$dest/$new_file"
+    fi
 done 2>/dev/null
